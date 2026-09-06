@@ -4,18 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yarn & Bloom — Handcrafted Crochet</title>
-
-  <!-- Bootstrap CSS (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
-    /* ========== CSS VARIABLES (COLOR THEME) ========== */
     :root {
       --cream: #fdf8f3;
       --blush: #f7e6e0;
@@ -34,6 +26,149 @@
 
     h1, h2, h3, h4, .display-font {
       font-family: 'Playfair Display', serif;
+    }
+
+    /* ========== BLUR EFFECT ON MAIN CONTENT ========== */
+    #main-content {
+      transition: filter 0.4s ease, opacity 0.4s ease;
+    }
+
+    #main-content.blurred {
+      filter: blur(8px);
+      opacity: 0.7;
+      pointer-events: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    /* ========== VERIFICATION PANEL (OVERLAY) ========== */
+    #verification-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(61, 64, 91, 0.35);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      padding: 1.5rem;
+    }
+
+    #verification-panel.hidden {
+      display: none;
+    }
+
+    .verify-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(61, 64, 91, 0.25);
+      text-align: center;
+      animation: fadeInUp 0.45s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .verify-card .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--coral);
+      margin-bottom: 0.5rem;
+    }
+
+    .verify-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.4rem;
+      color: var(--deep);
+    }
+
+    .verify-card .subtitle {
+      color: #6b6f8a;
+      font-size: 0.95rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .verify-card label {
+      display: block;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+      color: var(--deep);
+    }
+
+    .verify-card input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 1rem;
+      margin-bottom: 1.2rem;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .verify-card input:focus {
+      border-color: var(--coral);
+    }
+
+    .verify-card .btn-verify {
+      width: 100%;
+      background: var(--coral);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 0.85rem;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(224, 122, 95, 0.3);
+    }
+
+    .verify-card .btn-verify:hover {
+      background: #c96a52;
+      transform: translateY(-2px);
+    }
+
+    #message-box {
+      margin-top: 1.4rem;
+      padding: 1rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      display: none;
+      line-height: 1.5;
+    }
+
+    #message-box.show {
+      display: block;
+    }
+
+    #message-box.success {
+      background: rgba(129, 178, 154, 0.15);
+      color: #2d6a4f;
+      border: 1px solid rgba(129, 178, 154, 0.4);
+    }
+
+    #message-box.error {
+      background: rgba(224, 122, 95, 0.12);
+      color: #9b3a2a;
+      border: 1px solid rgba(224, 122, 95, 0.35);
+    }
+
+    #countdown {
+      margin-top: 0.8rem;
+      font-weight: 500;
+      color: var(--sage);
+      font-size: 0.9rem;
     }
 
     /* ========== NAVBAR ========== */
@@ -74,7 +209,6 @@
       width: 70%;
     }
 
-    /* ========== BUTTONS ========== */
     .btn-coral {
       background: var(--coral);
       color: white;
@@ -107,7 +241,7 @@
       color: white;
     }
 
-    /* ========== HERO SECTION ========== */
+    /* ========== HERO ========== */
     .hero {
       min-height: 100vh;
       background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 50%, #e8f0e9 100%);
@@ -141,10 +275,7 @@
       z-index: 0;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 1;
-    }
+    .hero-content { position: relative; z-index: 1; }
 
     .hero-badge {
       display: inline-block;
@@ -165,9 +296,7 @@
       margin-bottom: 1.2rem;
     }
 
-    .hero h1 span {
-      color: var(--coral);
-    }
+    .hero h1 span { color: var(--coral); }
 
     .hero p.lead {
       font-size: 1.15rem;
@@ -203,10 +332,8 @@
       box-shadow: 0 8px 25px rgba(129, 178, 154, 0.4);
     }
 
-    /* ========== SECTION STYLING ========== */
-    .section-padding {
-      padding: 5.5rem 0;
-    }
+    /* ========== SECTIONS ========== */
+    .section-padding { padding: 5.5rem 0; }
 
     .section-label {
       display: inline-block;
@@ -231,7 +358,6 @@
       font-size: 1.05rem;
     }
 
-    /* ========== SERVICE CARDS ========== */
     .service-card {
       background: white;
       border-radius: 20px;
@@ -294,7 +420,6 @@
       margin-bottom: 0;
     }
 
-    /* ========== WHY US / FEATURES ========== */
     .features-section {
       background: linear-gradient(180deg, var(--cream) 0%, var(--blush) 100%);
     }
@@ -331,7 +456,6 @@
       margin: 0;
     }
 
-    /* ========== CTA BANNER ========== */
     .cta-banner {
       background: linear-gradient(135deg, var(--deep) 0%, #2d3047 100%);
       border-radius: 24px;
@@ -363,7 +487,6 @@
       margin: 0 auto 2rem;
     }
 
-    /* ========== FOOTER ========== */
     footer {
       background: var(--deep);
       color: rgba(255,255,255,0.7);
@@ -383,9 +506,7 @@
       transition: color 0.2s;
     }
 
-    footer a:hover {
-      color: var(--gold);
-    }
+    footer a:hover { color: var(--gold); }
 
     footer .social-link {
       display: inline-flex;
@@ -411,7 +532,6 @@
       font-size: 0.9rem;
     }
 
-    /* ========== RESPONSIVE ========== */
     @media (max-width: 991px) {
       .hero {
         text-align: center;
@@ -421,272 +541,317 @@
         margin-left: auto;
         margin-right: auto;
       }
-      .hero-image-wrapper {
-        margin-top: 3rem;
-      }
-      .floating-badge {
-        left: 10px;
-      }
+      .hero-image-wrapper { margin-top: 3rem; }
+      .floating-badge { left: 10px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ==================== NAVBAR ==================== -->
-  <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">
+  <!-- AGE VERIFICATION PANEL -->
+  <div id="verification-panel">
+    <div class="verify-card">
+      <div class="logo">
         <i class="bi bi-heart-fill me-1" style="font-size:0.9rem;"></i> Yarn & Bloom
-      </a>
-      <button aria-label="Close Menu" class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-        <span class="navbar-toggler-icon"></span>
+      </div>
+      <h2>Welcome!</h2>
+      <p class="subtitle">Please enter your details to continue</p>
+
+      <label for="userName">Your Name</label>
+      <input type="text" id="userName" placeholder="Enter your name" autocomplete="off">
+
+      <label for="userAge">Your Age</label>
+      <input type="number" id="userAge" placeholder="Enter your age" min="1" max="120">
+
+      <button class="btn-verify" id="verifyBtn" onclick="displayGreeting()">
+        Enter Site
       </button>
-      <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto align-items-lg-center">
-          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="#why-us">Why Us</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-            <a class="btn btn-coral btn-sm" href="#contact">Order Now</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
-  <!-- ==================== HERO SECTION ==================== -->
-  <section class="hero">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 hero-content">
-          <span class="hero-badge">
-            <i class="bi bi-stars me-1"></i> Handmade with love since 2018
-          </span>
-          <h1>Soft stitches.<br><span>Warm hearts.</span></h1>
-          <p class="lead">
-            Discover beautifully handcrafted crochet pieces — from cozy blankets to unique home décor — made one stitch at a time with premium yarns and pure passion.
-          </p>
-          <div class="d-flex flex-wrap gap-3 justify-content-lg-start justify-content-center">
-            <a href="#services" class="btn btn-coral">
-              Explore Collection <i class="bi bi-arrow-right ms-1"></i>
-            </a>
-            <a href="#contact" class="btn btn-outline-coral">
-              Custom Order
-            </a>
-          </div>
-          <div class="d-flex gap-4 mt-4 justify-content-lg-start justify-content-center">
-            <div>
-              <strong class="d-block" style="font-size:1.4rem; color:var(--coral);">2.5k+</strong>
-              <small class="text-muted">Happy customers</small>
-            </div>
-            <div>
-              <strong class="d-block" style="font-size:1.4rem; color:var(--coral);">180+</strong>
-              <small class="text-muted">Unique designs</small>
-            </div>
-            <div>
-              <strong class="d-block" style="font-size:1.4rem; color:var(--coral);">4.9★</strong>
-              <small class="text-muted">Average rating</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-5 offset-lg-1 hero-image-wrapper">
-          <div class="hero-card">
-            <div style="
-              width:100%;
-              aspect-ratio:4/5;
-              border-radius:16px;
-              background: linear-gradient(160deg, #f7e6e0 0%, #e8f0e9 40%, #f2cc8f 100%);
-              display:flex;
-              flex-direction:column;
-              align-items:center;
-              justify-content:center;
-              position:relative;
-              overflow:hidden;
-            ">
-              <div style="font-size:5rem; opacity:0.9;">🧶</div>
-              <p class="mt-2 mb-0" style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--deep);">Cozy Creations</p>
-              <small style="color:#6b6f8a;">Hand-stitched with care</small>
-            </div>
-          </div>
-          <div class="floating-badge">
-            <i class="bi bi-truck me-1"></i> Free shipping over $50
-          </div>
-        </div>
-      </div>
+      <div id="message-box"></div>
+      <div id="countdown"></div>
     </div>
-  </section>
+  </div>
 
-  <!-- ==================== SERVICES / CARDS SECTION ==================== -->
-  <section id="services" class="section-padding">
-    <div class="container">
-      <div class="text-center">
-        <span class="section-label">What We Offer</span>
-        <h2 class="section-title">Handcrafted with Heart</h2>
-        <p class="section-subtitle">
-          From everyday essentials to one-of-a-kind gifts, every piece is lovingly made by hand using high-quality, soft yarns.
-        </p>
-      </div>
-      <div class="row g-4">
-        <div class="col-md-6 col-lg-3">
-          <div class="service-card">
-            <div class="service-icon icon-coral">
-              <i class="bi bi-house-heart"></i>
-            </div>
-            <h4>Home Décor</h4>
-            <p>Beautiful cushions, wall hangings, and table runners that add warmth and texture to any room.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="service-card">
-            <div class="service-icon icon-sage">
-              <i class="bi bi-person-hearts"></i>
-            </div>
-            <h4>Wearables</h4>
-            <p>Soft beanies, scarves, cardigans, and accessories designed for comfort and everyday style.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="service-card">
-            <div class="service-icon icon-gold">
-              <i class="bi bi-gift"></i>
-            </div>
-            <h4>Custom Gifts</h4>
-            <p>Personalized blankets, baby sets, and keepsakes made to order for the people you love most.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="service-card">
-            <div class="service-icon icon-deep">
-              <i class="bi bi-palette2"></i>
-            </div>
-            <h4>Workshops</h4>
-            <p>Learn the art of crochet in fun, beginner-friendly sessions — online or in-person.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- MAIN CONTENT (gets blurred) -->
+  <div id="main-content" class="blurred">
 
-  <!-- ==================== WHY US SECTION ==================== -->
-  <section id="why-us" class="section-padding features-section">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-5 mb-5 mb-lg-0">
-          <span class="section-label">Why Yarn & Bloom</span>
-          <h2 class="section-title">Stitched for quality.<br>Made for you.</h2>
-          <p class="text-muted mb-4" style="line-height:1.7;">
-            We believe every stitch tells a story. Our small-batch approach means careful attention to detail, sustainable materials, and pieces that last.
-          </p>
-          <a href="#contact" class="btn btn-coral">Start Your Order</a>
-        </div>
-        <div class="col-lg-6 offset-lg-1">
-          <div class="feature-item">
-            <div class="feature-num">01</div>
-            <div>
-              <h5>Premium Yarns Only</h5>
-              <p>We source soft, durable, and ethically produced yarns so every piece feels luxurious against the skin.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-num">02</div>
-            <div>
-              <h5>Made to Order</h5>
-              <p>Choose your colors, sizes, and details. No mass production — just thoughtful, personalized craftsmanship.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-num">03</div>
-            <div>
-              <h5>Eco-Friendly Packaging</h5>
-              <p>Orders arrive in recyclable materials with a handwritten note. Small details that make a big difference.</p>
-            </div>
-          </div>
-          <div class="feature-item mb-0">
-            <div class="feature-num">04</div>
-            <div>
-              <h5>Satisfaction Guaranteed</h5>
-              <p>Not quite right? We’ll work with you until your piece feels perfect — or offer a full refund.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== CTA BANNER ==================== -->
-  <section class="section-padding">
-    <div class="container">
-      <div class="cta-banner">
-        <h2>Ready for something uniquely yours?</h2>
-        <p>Tell us your vision and we’ll bring it to life — one careful stitch at a time.</p>
-        <a href="#contact" class="btn btn-coral">
-          Request a Custom Piece <i class="bi bi-arrow-right ms-1"></i>
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-heart-fill me-1" style="font-size:0.9rem;"></i> Yarn & Bloom
         </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="#why-us">Why Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+              <a class="btn btn-coral btn-sm" href="#contact">Order Now</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </section>
+    </nav>
 
-  <!-- ==================== FOOTER ==================== -->
-  <footer id="contact">
-    <div class="container">
-      <div class="row g-4">
-        <div class="col-lg-4">
-          <h5>
-            <i class="bi bi-heart-fill me-1" style="color:var(--coral); font-size:0.9rem;"></i>
-            Yarn & Bloom
-          </h5>
-          <p style="max-width:280px; line-height:1.7;">
-            Handcrafted crochet pieces that bring warmth, texture, and joy into everyday life.
-          </p>
-          <div class="mt-3">
-            <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="social-link"><i class="bi bi-pinterest"></i></a>
-            <a href="#" class="social-link"><i class="bi bi-tiktok"></i></a>
+    <section class="hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 hero-content">
+            <span class="hero-badge">
+              <i class="bi bi-stars me-1"></i> Handmade with love since 2018
+            </span>
+            <h1>Soft stitches.<br><span>Warm hearts.</span></h1>
+            <p class="lead">
+              Discover beautifully handcrafted crochet pieces — from cozy blankets to unique home décor — made one stitch at a time with premium yarns and pure passion.
+            </p>
+            <div class="d-flex flex-wrap gap-3 justify-content-lg-start justify-content-center">
+              <a href="#services" class="btn btn-coral">
+                Explore Collection <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+              <a href="#contact" class="btn btn-outline-coral">Custom Order</a>
+            </div>
+            <div class="d-flex gap-4 mt-4 justify-content-lg-start justify-content-center">
+              <div>
+                <strong class="d-block" style="font-size:1.4rem; color:var(--coral);">2.5k+</strong>
+                <small class="text-muted">Happy customers</small>
+              </div>
+              <div>
+                <strong class="d-block" style="font-size:1.4rem; color:var(--coral);">180+</strong>
+                <small class="text-muted">Unique designs</small>
+              </div>
+              <div>
+                <strong class="d-block" style="font-size:1.4rem; color:var(--coral);">4.9★</strong>
+                <small class="text-muted">Average rating</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 offset-lg-1 hero-image-wrapper">
+            <div class="hero-card">
+              <div style="
+                width:100%; aspect-ratio:4/5; border-radius:16px;
+                background: linear-gradient(160deg, #f7e6e0 0%, #e8f0e9 40%, #f2cc8f 100%);
+                display:flex; flex-direction:column; align-items:center; justify-content:center;
+              ">
+                <div style="font-size:5rem;">🧶</div>
+                <p class="mt-2 mb-0" style="font-family:'Playfair Display',serif; font-size:1.3rem;">Cozy Creations</p>
+                <small style="color:#6b6f8a;">Hand-stitched with care</small>
+              </div>
+            </div>
+            <div class="floating-badge">
+              <i class="bi bi-truck me-1"></i> Free shipping over $50
+            </div>
           </div>
         </div>
-        <div class="col-6 col-lg-2">
-          <h5 style="font-size:1rem;">Shop</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="#services">Home Décor</a></li>
-            <li class="mb-2"><a href="#services">Wearables</a></li>
-            <li class="mb-2"><a href="#services">Custom Gifts</a></li>
-            <li class="mb-2"><a href="#services">Workshops</a></li>
-          </ul>
+      </div>
+    </section>
+
+    <section id="services" class="section-padding">
+      <div class="container">
+        <div class="text-center">
+          <span class="section-label">What We Offer</span>
+          <h2 class="section-title">Handcrafted with Heart</h2>
+          <p class="section-subtitle">
+            From everyday essentials to one-of-a-kind gifts, every piece is lovingly made by hand using high-quality, soft yarns.
+          </p>
         </div>
-        <div class="col-6 col-lg-2">
-          <h5 style="font-size:1rem;">Company</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="#why-us">About Us</a></li>
-            <li class="mb-2"><a href="#">Care Guide</a></li>
-            <li class="mb-2"><a href="#">Shipping</a></li>
-            <li class="mb-2"><a href="#">FAQs</a></li>
-          </ul>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3">
+            <div class="service-card">
+              <div class="service-icon icon-coral"><i class="bi bi-house-heart"></i></div>
+              <h4>Home Décor</h4>
+              <p>Beautiful cushions, wall hangings, and table runners that add warmth and texture to any room.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="service-card">
+              <div class="service-icon icon-sage"><i class="bi bi-person-hearts"></i></div>
+              <h4>Wearables</h4>
+              <p>Soft beanies, scarves, cardigans, and accessories designed for comfort and everyday style.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="service-card">
+              <div class="service-icon icon-gold"><i class="bi bi-gift"></i></div>
+              <h4>Custom Gifts</h4>
+              <p>Personalized blankets, baby sets, and keepsakes made to order for the people you love most.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="service-card">
+              <div class="service-icon icon-deep"><i class="bi bi-palette2"></i></div>
+              <h4>Workshops</h4>
+              <p>Learn the art of crochet in fun, beginner-friendly sessions — online or in-person.</p>
+            </div>
+          </div>
         </div>
-        <div class="col-lg-4">
-          <h5 style="font-size:1rem;">Get in Touch</h5>
-          <p class="mb-2">
-            <i class="bi bi-envelope me-2"></i> hello@yarnandbloom.com
-          </p>
-          <p class="mb-2">
-            <i class="bi bi-telephone me-2"></i> +1 (555) 123-4567
-          </p>
-          <p class="mb-3">
-            <i class="bi bi-geo-alt me-2"></i> Portland, OR
-          </p>
-          <a href="mailto:hello@yarnandbloom.com" class="btn btn-coral btn-sm">
-            Send a Message
+      </div>
+    </section>
+
+    <section id="why-us" class="section-padding features-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-5 mb-5 mb-lg-0">
+            <span class="section-label">Why Yarn & Bloom</span>
+            <h2 class="section-title">Stitched for quality.<br>Made for you.</h2>
+            <p class="text-muted mb-4" style="line-height:1.7;">
+              We believe every stitch tells a story. Our small-batch approach means careful attention to detail, sustainable materials, and pieces that last.
+            </p>
+            <a href="#contact" class="btn btn-coral">Start Your Order</a>
+          </div>
+          <div class="col-lg-6 offset-lg-1">
+            <div class="feature-item">
+              <div class="feature-num">01</div>
+              <div>
+                <h5>Premium Yarns Only</h5>
+                <p>We source soft, durable, and ethically produced yarns so every piece feels luxurious against the skin.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">02</div>
+              <div>
+                <h5>Made to Order</h5>
+                <p>Choose your colors, sizes, and details. No mass production — just thoughtful, personalized craftsmanship.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-num">03</div>
+              <div>
+                <h5>Eco-Friendly Packaging</h5>
+                <p>Orders arrive in recyclable materials with a handwritten note. Small details that make a big difference.</p>
+              </div>
+            </div>
+            <div class="feature-item mb-0">
+              <div class="feature-num">04</div>
+              <div>
+                <h5>Satisfaction Guaranteed</h5>
+                <p>Not quite right? We’ll work with you until your piece feels perfect — or offer a full refund.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-padding">
+      <div class="container">
+        <div class="cta-banner">
+          <h2>Ready for something uniquely yours?</h2>
+          <p>Tell us your vision and we’ll bring it to life — one careful stitch at a time.</p>
+          <a href="#contact" class="btn btn-coral">
+            Request a Custom Piece <i class="bi bi-arrow-right ms-1"></i>
           </a>
         </div>
       </div>
-      <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-        <span>© 2026 Yarn & Bloom. All rights reserved.</span>
-        <span>Made with <i class="bi bi-heart-fill" style="color:var(--coral); font-size:0.75rem;"></i> and countless stitches.</span>
-      </div>
-    </div>
-  </footer>
+    </section>
 
-  <!-- Bootstrap JavaScript (needed for mobile navbar) -->
+    <footer id="contact">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <h5>
+              <i class="bi bi-heart-fill me-1" style="color:var(--coral); font-size:0.9rem;"></i>
+              Yarn & Bloom
+            </h5>
+            <p style="max-width:280px; line-height:1.7;">
+              Handcrafted crochet pieces that bring warmth, texture, and joy into everyday life.
+            </p>
+            <div class="mt-3">
+              <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="social-link"><i class="bi bi-pinterest"></i></a>
+              <a href="#" class="social-link"><i class="bi bi-tiktok"></i></a>
+            </div>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 style="font-size:1rem;">Shop</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#services">Home Décor</a></li>
+              <li class="mb-2"><a href="#services">Wearables</a></li>
+              <li class="mb-2"><a href="#services">Custom Gifts</a></li>
+              <li class="mb-2"><a href="#services">Workshops</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 style="font-size:1rem;">Company</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#why-us">About Us</a></li>
+              <li class="mb-2"><a href="#">Care Guide</a></li>
+              <li class="mb-2"><a href="#">Shipping</a></li>
+              <li class="mb-2"><a href="#">FAQs</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4">
+            <h5 style="font-size:1rem;">Get in Touch</h5>
+            <p class="mb-2"><i class="bi bi-envelope me-2"></i> hello@yarnandbloom.com</p>
+            <p class="mb-2"><i class="bi bi-telephone me-2"></i> +1 (555) 123-4567</p>
+            <p class="mb-3"><i class="bi bi-geo-alt me-2"></i> Portland, OR</p>
+            <a href="mailto:hello@yarnandbloom.com" class="btn btn-coral btn-sm">Send a Message</a>
+          </div>
+        </div>
+        <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+          <span>© 2026 Yarn & Bloom. All rights reserved.</span>
+          <span>Made with <i class="bi bi-heart-fill" style="color:var(--coral); font-size:0.75rem;"></i> and countless stitches.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- end #main-content -->
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // 1. Variable storing a user's name
+  // 2. Condition that checks if the user is above 18 or not
+  // 3. Loop that counts from 1 to 5
+  // 4. Function that displays a greeting message
+  // 5. Button that triggers the function when clicked
+
+  function displayGreeting() {
+
+    // 1. Variable storing a user's name
+    let userName = document.getElementById("userName").value.trim();
+    let userAge = Number(document.getElementById("userAge").value);
+
+    const messageBox = document.getElementById("message-box");
+    const countdown = document.getElementById("countdown");
+
+    // Basic validation
+    if (userName === "" || isNaN(userAge) || userAge <= 0) {
+      messageBox.className = "show error";
+      messageBox.innerHTML = "Please enter a valid name and age.";
+      countdown.innerHTML = "";
+      return;
+    }
+
+    // 2. Condition that checks if the user is above 18 or not
+    if (userAge >= 18) {
+      // Show greeting
+      messageBox.className = "show success";
+      messageBox.innerHTML = `Hello, <strong>${userName}</strong>! 🧶<br>Welcome to Yarn & Bloom. Enjoy our handcrafted collection!`;
+
+      // 3. Loop that counts from 1 to 5
+      let countText = "Entering in: ";
+      for (let i = 1; i <= 5; i++) {
+        countText += i + (i < 5 ? " · " : "");
+      }
+      countdown.innerHTML = countText;
+
+      // Hide the panel after 2.2 seconds
+      setTimeout(function () {
+        document.getElementById("verification-panel").classList.add("hidden");
+        document.getElementById("main-content").classList.remove("blurred");
+      }, 2200);
+
+    } else {
+      // Under 18
+      messageBox.className = "show error";
+      messageBox.innerHTML = `Sorry, <strong>${userName}</strong>. You must be 18 or older to enter this site.`;
+      countdown.innerHTML = "";
+    }
+  }
+</script>
+
 </body>
 </html>
